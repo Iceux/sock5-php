@@ -56,14 +56,13 @@ class Sock5Server{
 		$this->serv->on('close', [$this,'onClose']);
 		$this->logger = new \Katzgrau\KLogger\Logger(getcwd().'/logs');
 	}
-	protected function onConnect($serv, $fd){
+	public function onConnect($serv, $fd){
 		// 设置当前连接的状态为STAGE_INIT，初始状态
 		if(!isset($this->frontends[$fd])){
 			$this->frontends[$fd]['stage'] = STAGE_INIT;
 		}
 	}
-	protected function onReceive($serv, $fd, $from_id, $data){
-
+	public function onReceive($serv, $fd, $from_id, $data){
 		$connection = isset($this->frontends[$fd]) ? $this->frontends[$fd] : false;
 		if(!$connection){
 			$this->frontends[$fd]['stage'] = STAGE_INIT;
@@ -141,7 +140,7 @@ class Sock5Server{
 			default:break;
 		}
 	}
-	protected function onClose($serv, $fd, $from_id){
+	public function onClose($serv, $fd, $from_id){
 		//清理掉后端连接
 		if (isset($this->frontends[$fd]['socket'])){
 			$backend_socket = $this->frontends[$fd]['socket'];
@@ -153,7 +152,8 @@ class Sock5Server{
 		$this->logger->debug("onClose: frontend[$fd]");
 	}
 	public function start(){
-		$default = ['daemonize' => $this->config['daemon'],
+		$default = [
+			'daemonize' => $this->config['daemon'],
 			'timeout' => 1,
 			'poll_thread_num' => 1,
 			'worker_num' => 1,
