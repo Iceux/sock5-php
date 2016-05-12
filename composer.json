@@ -1,5 +1,5 @@
 {
-    "name": "liubinzh/sock5-proxy",
+    "name": "liubinzh/sock5-php",
     "description": "a sock5 proxy server implementation based on php swoole extension",
     "license": "MIT",
     "authors": [
@@ -8,7 +8,7 @@
             "email": "liubinzh@gmail.com"
         }
     ],
-    "require": {
+    "require-dev": {
         "katzgrau/klogger": "dev-master"
     },
     "autoload": {
@@ -16,5 +16,6 @@
 	    "Liubinzh\\Sock5\\": "src/"
 	  },
         "classmap": ["src/"]
-    }
+    },
+    "minimum-stability": "dev"
 }
