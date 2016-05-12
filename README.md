@@ -1,5 +1,5 @@
 
-基于swoole扩展的sock5代理服务器
+基于[swoole](https://github.com/swoole/swoole-src)扩展的sock5代理服务器
 
 # Installation
 
@@ -23,7 +23,7 @@ $s->start();
 
 启动:
 
-```bash
+```sh
 
 php  start.php -d
 

@@ -31,15 +31,12 @@ class Sock5Server{
 	protected $config;
 
 	public function __construct(){
-
 		$this->config =  array('daemon'=>false, 'host'=>'0.0.0.0', 'port'=>1080);
-
 		$argv = getopt('c:d');
 		if(isset($argv['d'])){
 			$this->config['daemon'] = true;
 		}
 		$config = empty($argv['c']) ? '' : getcwd() . '/' . $argv['c'];
-
 		if($config){
 			if (!file_exists($config)){
 				throw new \Exception('config file is not exists');
@@ -52,7 +49,6 @@ class Sock5Server{
 		if(is_array($config)){
 			$this->config = array_merge($this->config, $config);
 		}
-
 		$this->serv = new \swoole_server($this->config['host'], $this->config['port'],
 			SWOOLE_PROCESS, SWOOLE_SOCK_TCP);
 		$this->serv->on('connect', [$this,'onConnect']);
@@ -60,19 +56,18 @@ class Sock5Server{
 		$this->serv->on('close', [$this,'onClose']);
 		$this->logger = new \Katzgrau\KLogger\Logger(getcwd().'/logs');
 	}
-	public function onConnect($serv, $fd){
+	protected function onConnect($serv, $fd){
 		// 设置当前连接的状态为STAGE_INIT，初始状态
 		if(!isset($this->frontends[$fd])){
 			$this->frontends[$fd]['stage'] = STAGE_INIT;
 		}
 	}
-	public function onReceive($serv, $fd, $from_id, $data){
+	protected function onReceive($serv, $fd, $from_id, $data){
 
 		$connection = isset($this->frontends[$fd]) ? $this->frontends[$fd] : false;
 		if(!$connection){
 			$this->frontends[$fd]['stage'] = STAGE_INIT;
 		}
-		//
 		switch ($this->frontends[$fd]['stage']){
 			case STAGE_INIT:
 				//与客户端建立SOCKS5连接
@@ -93,7 +88,6 @@ class Sock5Server{
 					$serv->send($fd, "\x05\x08\x00\x01");
 					return $this->serv->close($fd);
 				}
-
 				//尚未建立连接
 				if (!isset($this->frontends[$fd]['socket'])){
 					$this->frontends[$fd]['stage'] = STAGE_CONNECTING;
@@ -147,7 +141,7 @@ class Sock5Server{
 			default:break;
 		}
 	}
-	function onClose($serv, $fd, $from_id){
+	protected function onClose($serv, $fd, $from_id){
 		//清理掉后端连接
 		if (isset($this->frontends[$fd]['socket'])){
 			$backend_socket = $this->frontends[$fd]['socket'];
@@ -174,7 +168,7 @@ class Sock5Server{
 	 * 解析客户端发来的socket5头部数据
 	 * @param string $buffer
 	 */
-	function parse_socket5_header($buffer){
+	protected function parse_socket5_header($buffer){
 		$buffer = substr($buffer, 3);
 		$addr_type = ord($buffer[0]);
 		switch($addr_type){
