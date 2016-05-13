@@ -9,13 +9,12 @@
         }
     ],
     "require": {
-        "katzgrau/klogger": "1.2.0"
+        "katzgrau/klogger": "*"
     },
     "autoload": {
         "psr-4": {
 	    "Liubinzh\\Sock5\\": "src/"
 	  },
         "classmap": ["src/"]
-    },
-    "minimum-stability": "stable"
+    }
 }
