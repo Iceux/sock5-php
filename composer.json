@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "katzgrau/klogger": "dev-master"
+        "katzgrau/klogger": "1.2.0"
     },
     "autoload": {
         "psr-4": {
