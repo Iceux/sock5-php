@@ -8,7 +8,7 @@
             "email": "liubinzh@gmail.com"
         }
     ],
-    "require-dev": {
+    "require": {
         "katzgrau/klogger": "dev-master"
     },
     "autoload": {
@@ -17,5 +17,5 @@
 	  },
         "classmap": ["src/"]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
